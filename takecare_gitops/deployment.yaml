@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: takecare-app
+  labels:
+    app: takecare
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: takecare
+  template:
+    metadata:
+      labels:
+        app: takecare
+    spec:
+      containers:
+      - name: takecare
+        image: ridhin/takecare-app:latest # Jenkins will dynamically update this tag
+        ports:
+        - containerPort: 8000
