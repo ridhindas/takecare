@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: takecare
-        image: ridhin/takecare-app:latest # Jenkins will dynamically update this tag
+        image: ridhindas/takecare-app:latest # ⚠️ Updated to match Jenkins
         ports:
         - containerPort: 8000

@@ -50,12 +50,17 @@ pipeline {
         stage('Build & Push Docker Image') {
             steps {
                 script {
+                    // ⚠️ CHANGE THIS to match your exact Docker Hub username
+                    env.DOCKER_IMAGE = "ridhindas/takecare-app"
+                    env.DOCKER_TAG = "${BUILD_NUMBER}"
+                    
+                    echo "Building Docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
                     sh "docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest"
                     
-                    // Push to Docker Hub (Ensure 'docker-hub-creds' is configured in Jenkins)
+                    // Use single quotes (' ') so the shell handles the variables, not Groovy
                     withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                         sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
                         sh "docker push ${DOCKER_IMAGE}:latest"
                     }
