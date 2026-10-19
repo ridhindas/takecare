@@ -1,21 +1,19 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: takecare-app
-  labels:
-    app: takecare
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: takecare
-  template:
-    metadata:
-      labels:
-        app: takecare
-    spec:
-      containers:
-      - name: takecare
-        image: ridhindas/takecare-app:latest # ⚠️ Updated to match Jenkins
-        ports:
-        - containerPort: 8000
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: takecare-app
+   spec:
+     replicas: 1
+     selector:
+       matchLabels:
+         app: takecare
+     template:
+       metadata:
+         labels:
+           app: takecare
+       spec:
+         containers:
+         - name: takecare
+           image: ridhindas/takecare-app:latest
+           ports:
+           - containerPort: 8000
