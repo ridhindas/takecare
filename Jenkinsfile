@@ -62,7 +62,9 @@ pipeline {
                             
                             git add takecare_gitops/deployment.yaml
                             git commit -m "CI: Update image tag to ${DOCKER_TAG} [skip ci]" || echo "No changes to commit"
-                            git push
+                            
+                            # ⚠️ CHANGE THIS LINE: Explicitly push to origin main
+                            git push origin main
                         else
                             echo "ERROR: takecare_gitops/deployment.yaml not found in workspace!"
                             exit 1
@@ -71,5 +73,3 @@ pipeline {
                 }
             }
         }
-    }
-}
