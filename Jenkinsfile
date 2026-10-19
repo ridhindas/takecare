@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "ridhin/takecare-app"
+        DOCKER_IMAGE = "ridhindas/takecare-app"
         DOCKER_TAG = "${BUILD_NUMBER}"
         GITOPS_REPO_URL = "https://github.com/ridhindas/takecare.git"
     }
