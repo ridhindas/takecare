@@ -71,20 +71,25 @@ pipeline {
         stage('Update GitOps Repository') {
             steps {
                 script {
-                    // Clone GitOps repo, update image tag, commit, and push
-                    sh '''
-                        git clone ${GITOPS_REPO_URL} gitops-repo
-                        cd gitops-repo
-                        sed -i "s|image: .*|image: ${DOCKER_IMAGE}:${DOCKER_TAG}|g" deployment.yaml
-                        
-                        git config user.email "jenkins@takecare.com"
-                        git config user.name "Jenkins CI"
-                        git add deployment.yaml
-                        git commit -m "CI: Update image tag to ${DOCKER_TAG} [skip ci]" || echo "No changes to commit"
-                        git push
-                    '''
+                    echo "Updating deployment.yaml in the takecare_gitops folder..."
+                    sh """
+                        # Check if the file exists in the subfolder
+                        if [ -f takecare_gitops/deployment.yaml ]; then
+                            # Update the image tag directly in the existing file
+                            sed -i "s|image: .*|image: ${DOCKER_IMAGE}:${DOCKER_TAG}|g" takecare_gitops/deployment.yaml
+                            
+                            git config user.email "jenkins@takecare.com"
+                            git config user.name "Jenkins CI"
+                            
+                            # Add, commit, and push the updated file
+                            git add takecare_gitops/deployment.yaml
+                            git commit -m "CI: Update image tag to ${DOCKER_TAG} [skip ci]" || echo "No changes to commit"
+                            git push
+                        else
+                            echo "ERROR: takecare_gitops/deployment.yaml not found in workspace!"
+                            exit 1
+                        fi
+                    """
                 }
             }
         }
-    }
-}
