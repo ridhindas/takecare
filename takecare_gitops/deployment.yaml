@@ -14,6 +14,6 @@
        spec:
          containers:
          - name: takecare
-           image: ridhindas/takecare-app:17
+           image: ridhindas/takecare-app:18
            ports:
            - containerPort: 8000
